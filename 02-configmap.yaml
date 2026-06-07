@@ -1,0 +1,35 @@
+# apiVersion defines the Kubernetes API version.
+# ConfigMap uses the core v1 API.
+apiVersion: v1
+
+# kind tells Kubernetes we are creating a ConfigMap.
+kind: ConfigMap
+
+# metadata contains the name and namespace of the ConfigMap.
+metadata:
+
+  # name of the ConfigMap.
+  # The Pod will refer to this name.
+  name: app-config
+
+  # namespace where this ConfigMap will be created.
+  namespace: config-secret-demo
+
+# data contains key-value pairs.
+# ConfigMaps are used for non-sensitive configuration.
+data:
+
+  # Application name.
+  APP_NAME: "student-portal"
+
+  # Application environment.
+  APP_ENV: "training"
+
+  # A sample message that will be used by the Pod.
+  WELCOME_MESSAGE: "Hello from Kubernetes ConfigMap"
+
+  # This key will be mounted as a file later.
+  app.properties: |
+    app.name=student-portal
+    app.environment=training
+    app.owner=devops-class

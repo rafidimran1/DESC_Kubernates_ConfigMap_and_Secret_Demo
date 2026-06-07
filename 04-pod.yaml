@@ -1,0 +1,105 @@
+# apiVersion defines the Kubernetes API version.
+# Pod uses the core v1 API.
+apiVersion: v1
+
+# kind tells Kubernetes we are creating a Pod.
+kind: Pod
+
+# metadata contains the name, namespace, and labels of the Pod.
+metadata:
+
+  # name of the Pod.
+  name: config-secret-pod
+
+  # namespace where the Pod will be created.
+  namespace: config-secret-demo
+
+  # labels help identify the Pod.
+  labels:
+    app: config-secret-demo
+
+# spec defines how the Pod should run.
+spec:
+
+  # containers is the list of containers inside this Pod.
+  containers:
+
+    # name of the container.
+    - name: demo-container
+
+      # busybox is a small Linux image useful for simple demos.
+      image: busybox
+
+      # command keeps the container running.
+      # Without this, busybox will exit immediately.
+      command: ["sh", "-c", "sleep 3600"]
+
+      # env defines environment variables inside the container.
+      env:
+
+        # This environment variable gets its value from ConfigMap.
+        - name: APP_NAME
+          valueFrom:
+            configMapKeyRef:
+
+              # Name of the ConfigMap.
+              name: app-config
+
+              # Key inside the ConfigMap.
+              key: APP_NAME
+
+        # This environment variable also comes from ConfigMap.
+        - name: APP_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_ENV
+
+        # This environment variable comes from Secret.
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+
+              # Name of the Secret.
+              name: app-secret
+
+              # Key inside the Secret.
+              key: DB_USERNAME
+
+        # This environment variable also comes from Secret.
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: DB_PASSWORD
+
+      # volumeMounts defines where volumes are mounted inside the container.
+      volumeMounts:
+
+        # Mount ConfigMap as files inside /etc/config.
+        - name: config-volume
+          mountPath: /etc/config
+
+        # Mount Secret as files inside /etc/secret.
+        - name: secret-volume
+          mountPath: /etc/secret
+
+          # readOnly true is recommended for Secrets.
+          readOnly: true
+
+  # volumes defines Pod-level volumes.
+  volumes:
+
+    # This volume comes from ConfigMap.
+    - name: config-volume
+      configMap:
+
+        # Name of the ConfigMap created earlier.
+        name: app-config
+
+    # This volume comes from Secret.
+    - name: secret-volume
+      secret:
+
+        # Name of the Secret created earlier.
+        secretName: app-secret

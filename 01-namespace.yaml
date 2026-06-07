@@ -1,0 +1,14 @@
+# apiVersion defines the Kubernetes API version.
+# Namespace uses the core v1 API.
+apiVersion: v1
+
+# kind tells Kubernetes what object we are creating.
+# Here, we are creating a Namespace.
+kind: Namespace
+
+# metadata contains basic information about the object.
+metadata:
+
+  # name is the name of the Namespace.
+  # All demo resources will be created inside this namespace.
+  name: config-secret-demo
