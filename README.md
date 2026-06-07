@@ -1,4 +1,5 @@
-Kubernetes ConfigMap and Secret Demo
+DESC_Kubernates_ConfigMap_and_Secret_Demo
+<br>
 This repository contains a basic Kubernetes/K3s demo showing how to use ConfigMaps and Secrets inside a Pod.
 The demo covers two common usage patterns:
 Injecting ConfigMap and Secret values as environment variables
